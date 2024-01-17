@@ -1,23 +1,14 @@
 import time
 import pytest
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-
-
-def driver():
-    print("Creating chrome driver")
-    my_driver = webdriver.Chrome()
-    yield my_driver
-    print("Closing chrome diver")
 
 
 class TestNegativeScenarios:
 
     @pytest.mark.login
     @pytest.mark.negative
-    def test_negative_username(self):
+    def test_negative_username(self, driver):
         # open webpage
-        driver = webdriver.Chrome()
         driver.get("https://practicetestautomation.com/practice-test-login/")
         # Type username incorrectUser into Username field
         username_locator = driver.find_element(By.ID, "username")
@@ -38,9 +29,8 @@ class TestNegativeScenarios:
 
     @pytest.mark.login
     @pytest.mark.negative
-    def test_negative_password(self):
+    def test_negative_password(self, driver):
         # open webpage
-        driver = webdriver.Chrome()
         driver.get("https://practicetestautomation.com/practice-test-login/")
         # Type username student into Username field
         username_locator = driver.find_element(By.ID, "username")
