@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.support import expected_conditions as ec
 import pytest
 from selenium.webdriver.common.by import By
@@ -21,7 +23,6 @@ class TestExceptions:
         assert row_2_input_element.is_displayed(), "Row 2 input should be displayed, but it is not."
 
     @pytest.mark.exceptions
-    @pytest.mark.debug
     def test_element_not_interactable_exception(self, driver):
         # Open page
         driver.get("https://practicetestautomation.com/practice-test-exceptions/")
@@ -38,7 +39,27 @@ class TestExceptions:
         save_button_locator = driver.find_element(
             By.XPATH, "//div[@id='rows']/div[3]/div[@class='row']/button[@id='save_btn']")
         save_button_locator.click()
-        #Verify text saved
+        # Verify text saved
         confirmation_element = wait.until(ec.visibility_of_element_located((By.ID, "confirmation")))
         confirmation_message = confirmation_element.text
         assert confirmation_message == "Row 2 was saved", "Confirmation message isn't expected"
+
+    @pytest.mark.exceptions
+    @pytest.mark.debug
+    def test_invalid_element_state_exception(self, driver):
+        # Open page
+        driver.get("https://practicetestautomation.com/practice-test-exceptions/")
+        # Clear input field
+        edit_button_locator = driver.find_element(By.XPATH, "/html//button[@id='edit_btn']")
+        edit_button_locator.click()
+        row_1_locator = driver.find_element(By.XPATH, "//div[@id='row1']/input")
+        wait = WebDriverWait(driver, 10)
+        wait.until(ec.element_to_be_clickable(row_1_locator))
+        row_1_locator.clear()
+        # Type text into the input field
+        row_1_locator.send_keys("Bread")
+        save_button_locator = driver.find_element(
+            By.XPATH, "/html//button[@id='save_btn']")
+        save_button_locator.click()
+        # Verify text changed
+        assert row_1_locator.get_attribute("value") == "Bread", "Text row 1 is not expected."
