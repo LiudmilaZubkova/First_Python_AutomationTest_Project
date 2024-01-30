@@ -76,5 +76,19 @@ class TestExceptions:
         add_button_locator.click()
         # Verify instruction text element is no longer displayed
         wait = WebDriverWait(driver, 10)
-        wait.until(ec.invisibility_of_element_located(instraction_text_element_locator), "Text instraction is displayed.")
+        assert wait.until(ec.invisibility_of_element_located(instraction_text_element_locator), "Text instraction is displayed.")
 
+    @pytest.mark.exceptions
+    @pytest.mark.debug
+    def test_timeout_exception(self, driver):
+        # Open page
+        driver.get("https://practicetestautomation.com/practice-test-exceptions/")
+        # Click Add button
+        add_button_locator = driver.find_element(By.XPATH, "//button[@id='add_btn']")
+        add_button_locator.click()
+        # Wait for 3 seconds for the second input field to be displayed
+        wait = WebDriverWait(driver, 6)
+        row_2_input_element = wait.until(ec.visibility_of_element_located(
+            (By.XPATH, "//div[@id='rows']/div[3]/div[@class='row']/input[@type='text']")), "Row 2 is not displayed.")
+        # Verify second input field is displayed
+        assert row_2_input_element.is_displayed(), "Row 2 input should be displayed, but it is not."
