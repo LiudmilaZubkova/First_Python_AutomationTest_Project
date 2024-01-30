@@ -45,7 +45,6 @@ class TestExceptions:
         assert confirmation_message == "Row 2 was saved", "Confirmation message isn't expected"
 
     @pytest.mark.exceptions
-    @pytest.mark.debug
     def test_invalid_element_state_exception(self, driver):
         # Open page
         driver.get("https://practicetestautomation.com/practice-test-exceptions/")
@@ -63,3 +62,19 @@ class TestExceptions:
         save_button_locator.click()
         # Verify text changed
         assert row_1_locator.get_attribute("value") == "Bread", "Text row 1 is not expected."
+
+    @pytest.mark.exceptions
+    @pytest.mark.debug
+    def test_stale_element_reference_exception(self, driver):
+        # Open page
+        driver.get("https://practicetestautomation.com/practice-test-exceptions/")
+        # Find the instructions text element
+        instraction_text_element_locator = driver.find_element(By.XPATH, "/html//p[@id='instructions']")
+        instraction_text_element_locator.is_displayed(), "Instraction text element is not displayed."
+        # Push add button
+        add_button_locator = driver.find_element(By.XPATH, "/html//button[@id='add_btn']")
+        add_button_locator.click()
+        # Verify instruction text element is no longer displayed
+        wait = WebDriverWait(driver, 10)
+        wait.until(ec.invisibility_of_element_located(instraction_text_element_locator), "Text instraction is displayed.")
+
