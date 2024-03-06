@@ -70,7 +70,7 @@ class TestExceptions:
         driver.get("https://practicetestautomation.com/practice-test-exceptions/")
         # Find the instructions text element
         instraction_text_element_locator = driver.find_element(By.XPATH, "/html//p[@id='instructions']")
-        instraction_text_element_locator.is_displayed(), "Instraction text element is not displayed."
+        instraction_text_element_locator._is_displayed(), "Instraction text element is not displayed."
         # Push add button
         add_button_locator = driver.find_element(By.XPATH, "/html//button[@id='add_btn']")
         add_button_locator.click()
