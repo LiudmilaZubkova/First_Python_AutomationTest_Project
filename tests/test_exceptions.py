@@ -19,7 +19,6 @@ class TestExceptions:
 
 
     @pytest.mark.exceptions
-    @pytest.mark.debug
     def test_element_not_interactable_exception(self, driver):
         # Open page
         exception_page = ExceptionsPage(driver)
@@ -29,24 +28,13 @@ class TestExceptions:
         assert exception_page.get_confirmation_message() == "Row 2 was saved", "Confirmation message isn't expected"
 
     @pytest.mark.exceptions
-
+    @pytest.mark.debug
     def test_invalid_element_state_exception(self, driver):
-        # Open page
-        driver.get("https://practicetestautomation.com/practice-test-exceptions/")
-        # Clear input field
-        edit_button_locator = driver.find_element(By.XPATH, "/html//button[@id='edit_btn']")
-        edit_button_locator.click()
-        row_1_locator = driver.find_element(By.XPATH, "//div[@id='row1']/input")
-        wait = WebDriverWait(driver, 10)
-        wait.until(ec.element_to_be_clickable(row_1_locator))
-        row_1_locator.clear()
-        # Type text into the input field
-        row_1_locator.send_keys("Bread")
-        save_button_locator = driver.find_element(
-            By.XPATH, "/html//button[@id='save_btn']")
-        save_button_locator.click()
-        # Verify text changed
-        assert row_1_locator.get_attribute("value") == "Bread", "Text row 1 is not expected."
+        exception_page = ExceptionsPage(driver)
+        exception_page.open()
+        exception_page.clear_row_1()
+        exception_page.add_first_food("Bread")
+        assert exception_page.get_attribute_row1("value") == "Bread", "Text row 1 is not expected."
 
     @pytest.mark.exceptions
 

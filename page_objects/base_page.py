@@ -24,6 +24,10 @@ class BasePage:
         wait = WebDriverWait(self._driver, time)
         wait.until(ec.visibility_of_element_located(locator))
 
+    def _wait_until_element_is_clickable(self, locator: tuple, time: int = 3):
+        wait = WebDriverWait(self._driver, time)
+        wait.until(ec.element_to_be_clickable(locator))
+
     @property
     def current_url(self) -> str:
         return self._driver.current_url
@@ -40,3 +44,10 @@ class BasePage:
     def _get_text(self, locator: tuple, time: int = 10) -> str:
         self._wait_until_element_is_visible(locator, time)
         return self._find(locator).text
+    def _get_attribute(self, locator: tuple, attribute: str, time: int = 3) -> str:
+        self._wait_until_element_is_visible(locator, time)
+        return self._find(locator).get_attribute(attribute)
+    def _clear(self, locator: tuple, time: int = 3):
+        self._wait_until_element_is_visible(locator, time)
+        self._find(locator).clear()
+
