@@ -13,6 +13,7 @@ class ExceptionsPage(BasePage):
     __row_2_save_button = (By.XPATH, "//div[@id='rows']/div[3]/div[@class='row']/button[@id='save_btn']")
     __confirmation_element = (By.ID, "confirmation")
     __edit_button = (By.XPATH, "/html//button[@id='edit_btn']")
+    __instructions_element = (By.ID, "instructions")
 
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
@@ -45,3 +46,7 @@ class ExceptionsPage(BasePage):
 
     def get_attribute_row1(self, attribute: str) -> str:
         return super()._get_attribute(self.__row_1_input_element, attribute)
+
+    def are_instruction_displayed(self) -> bool:
+        return super()._is_displayed(self.__instructions_element)
+
